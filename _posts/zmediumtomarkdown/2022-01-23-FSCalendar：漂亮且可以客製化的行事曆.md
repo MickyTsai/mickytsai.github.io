@@ -1,13 +1,16 @@
 ---
-title: "FSCalendar：漂亮且可以客製化的行事曆"
-author: "Micky Tsai"
+title: FSCalendar：漂亮且可以客製化的行事曆
+author: Micky Tsai
 date: 2022-01-23T14:35:37.547+0000
 last_modified_at: 2022-01-23T14:35:37.547+0000
-categories: [""]
-tags: ["swift","fscalendar"]
-description: "建立快速簡單，還可以高度客製化"
+categories:
+  - CMoney learning
+tags:
+  - swift
+  - fscalendar
+description: 建立快速簡單，還可以高度客製化
 image:
-  path: /assets/9e9080d69e35/1*_Wj4vzbjxlG3NbPIwUZ4XA.gif
+  path: /assets/FSCalendar/1*_Wj4vzbjxlG3NbPIwUZ4XA.gif
 render_with_liquid: false
 ---
 
@@ -17,12 +20,7 @@ render_with_liquid: false
 
 > 首先看看可以達到的客製化效果是什麼樣子 
 
-
-
-
-
-
-![可以放大縮小畫面，點選和顯示效果都可以客製化](/assets/9e9080d69e35/1*_Wj4vzbjxlG3NbPIwUZ4XA.gif)
+![yyy](/assets/FSCalendar/1*_Wj4vzbjxlG3NbPIwUZ4XA.gif)
 
 可以放大縮小畫面，點選和顯示效果都可以客製化
 
@@ -43,14 +41,14 @@ render_with_liquid: false
 
 
 
-![UIView 的 class 改為 FSCalendar](/assets/9e9080d69e35/1*8XZGRgQP1T7FrJ6nshhSiQ.png)
+![UIView 的 class 改為 FSCalendar](/assets/FSCalendar/1*8XZGRgQP1T7FrJ6nshhSiQ.png)
 
 UIView 的 class 改為 FSCalendar
 - 其實這樣去跑 run 就已經能顯示出一個行事曆了，但如果要進一步客製化跟實作點選時的動作，就要像TableView 一樣也做 delegate跟 dataSource，並有各種屬性可以調整，下面就來介紹這部分。
 
 
 
-![超快速產生行事曆](/assets/9e9080d69e35/1*gFiVdI2rNy4dK6DVHZ1NcA.png)
+![超快速產生行事曆](/assets/FSCalendar/1*gFiVdI2rNy4dK6DVHZ1NcA.png)
 
 超快速產生行事曆
 ### 客製化屬性
@@ -62,14 +60,14 @@ UIView 的 class 改為 FSCalendar
 月曆的星期顯示格式變更
 
 
-![預設：換成中文時\(“zh\_cn”\)，預設的星期格式](/assets/9e9080d69e35/1*z6CqGgwvE1q9fd2TpnVrJA.png)
+![預設：換成中文時\(“zh\_cn”\)，預設的星期格式](/assets/FSCalendar/1*z6CqGgwvE1q9fd2TpnVrJA.png)
 
 預設：換成中文時\(“zh\_cn”\)，預設的星期格式
 - calendarView\.appearance\.caseOptions = \.weekdayUsesSingleUpperCase
 
 
 
-![\.weekdayUsesSingleUpperCase](/assets/9e9080d69e35/1*Xg485V3IpmdwfaB4avnE3g.png)
+![\.weekdayUsesSingleUpperCase](/assets/FSCalendar/1*Xg485V3IpmdwfaB4avnE3g.png)
 
 \.weekdayUsesSingleUpperCase
 
@@ -82,7 +80,7 @@ UIView 的 class 改為 FSCalendar
 
 
 
-![](/assets/9e9080d69e35/1*oZ7qLO0-pJaFjAr1GzVMaw.png)
+![](/assets/FSCalendar/1*oZ7qLO0-pJaFjAr1GzVMaw.png)
 
 
 隱藏其他月份日期
@@ -90,7 +88,7 @@ UIView 的 class 改為 FSCalendar
 
 
 
-![](/assets/9e9080d69e35/1*YQ_PUMvLFQuTTh9gsmS5TQ.jpeg)
+![](/assets/FSCalendar/1*YQ_PUMvLFQuTTh9gsmS5TQ.jpeg)
 
 
 複選日期
@@ -108,14 +106,14 @@ calendarView\.allowsMultipleSelection = **true**
 
 
 
-![可自定義點選行事曆的日期時觸發的動作](/assets/9e9080d69e35/1*wvpsoQxHSlCxfXuxlnOdBg.png)
+![可自定義點選行事曆的日期時觸發的動作](/assets/FSCalendar/1*wvpsoQxHSlCxfXuxlnOdBg.png)
 
 可自定義點選行事曆的日期時觸發的動作
 - numberOfEventsFor// 設定日曆事件
 
 
 
-![return 值可以是 1~3範圍內，行事曆上將會出現對應數量的事件提示小圓點](/assets/9e9080d69e35/1*LTHjifGpDhRzP_GxJVQhHw.png)
+![return 值可以是 1~3範圍內，行事曆上將會出現對應數量的事件提示小圓點](/assets/FSCalendar/1*LTHjifGpDhRzP_GxJVQhHw.png)
 
 return 值可以是 1~3範圍內，行事曆上將會出現對應數量的事件提示小圓點
 
@@ -129,7 +127,7 @@ return 值可以是 1~3範圍內，行事曆上將會出現對應數量的事件
 
 
 
-![主要透過檢查自定義後日期格式 跟 資料做匹配，當有匹配資料，回傳事件數或事件圖片](/assets/9e9080d69e35/1*tPmbW5uEpNV71MP1yvW7Gg.png)
+![主要透過檢查自定義後日期格式 跟 資料做匹配，當有匹配資料，回傳事件數或事件圖片](/assets/FSCalendar/1*tPmbW5uEpNV71MP1yvW7Gg.png)
 
 主要透過檢查自定義後日期格式 跟 資料做匹配，當有匹配資料，回傳事件數或事件圖片
 
