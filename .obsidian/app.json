@@ -1,0 +1,10 @@
+{
+  "attachmentFolderPath": "./",
+  "livePreview": false,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "_posts",
+  "promptDelete": false,
+  "userIgnoreFilters": [
+    "assets/"
+  ]
+}
