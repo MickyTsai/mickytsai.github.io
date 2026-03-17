@@ -1,13 +1,18 @@
+# mickytsai.com
 
+MickyTsai 的個人部落格，記錄 iOS 開發筆記、讀書亂想與生活點滴。
 
-## Powered by
-- [Jekyll](https://jekyllrb.com/)
+🌐 **[mickytsai.com](https://mickytsai.com)**
+
+## 技術架構
+
+- [Jekyll](https://jekyllrb.com/) 靜態網站生成器
 - [Chirpy Jekyll Theme](https://github.com/cotes2020/jekyll-theme-chirpy/) v7.x
-- [ZMediumToMarkdown](https://github.com/ZhgChgLi/ZMediumToMarkdown) Latest
+- [ZMediumToMarkdown](https://github.com/ZhgChgLi/ZMediumToMarkdown) — 自動從 Medium 匯入文章
 
-## Other works
+## 本地開發
 
-### Integration Tools
-- [ZReviewTender](https://github.com/ZhgChgLi/ZReviewTender) is a tool for fetching app reviews from the App Store and Google Play Console and integrating them into your workflow.
-- [ZMediumToMarkdown](https://github.com/ZhgChgLi/ZMediumToMarkdown) is a powerful tool that allows you to effortlessly download and convert your Medium posts to Markdown format.
-- [linkyee](https://github.com/ZhgChgLi/linkyee) is a fully customized, open-source LinkTree alternative deployed directly on GitHub Pages.
+```bash
+bundle install
+bundle exec jekyll serve
+```

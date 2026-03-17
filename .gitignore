@@ -32,4 +32,4 @@ assets/js/dist
 .LSOverride
 
 # Obsidian configurations
-#.obsidian/
+.obsidian/
