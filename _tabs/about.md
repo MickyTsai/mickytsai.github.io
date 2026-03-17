@@ -4,5 +4,31 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-> Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
-{: .prompt-tip }
+## 嗨，我是 Micky 👋
+
+本名蔡敏麒，iOS 開發者，主要用 Swift 開發 App。
+
+寫程式之餘，也喜歡記錄一些讓自己覺得「欸，這個不錯」的事。所以這個部落格不只有技術文章，你還會看到各種亂入的主題。
+
+---
+
+### 我在這裡寫什麼
+
+**iOS 開發筆記**：平常踩過的坑、用過的套件、實作的小技巧，寫下來備忘，也希望對遇到同樣問題的人有點幫助。
+
+**讀書亂想**：不定時讀書，偶爾讀到腦袋開竅，忍不住想打一些字。不會寫書摘，比較像是跟自己的對話。
+
+**生活記錄**：包括但不限於：好用 app 推薦、EMT-1 初級救護員的學習筆記，以及其他覺得值得記下來的事。
+
+---
+
+### 關於 EMT-1
+
+2025 年考取了初級救護員（EMT-1）證照。學急救不是為了什麼偉大的理由，就是覺得「萬一哪天用到，能幫上忙」就值了。有興趣的話，部落格裡有整理一份複習重點。
+
+---
+
+### 找到我
+
+- GitHub：[MickyTsai](https://github.com/MickyTsai)
+- Email：micky1127@gmail.com
