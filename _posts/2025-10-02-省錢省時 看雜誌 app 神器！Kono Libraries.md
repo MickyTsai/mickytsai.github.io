@@ -1,6 +1,6 @@
 ---
 title: 省錢省時 看雜誌 app 神器！Kono Libraries
-by: Micky Tsai
+author: micky
 date: 2025-10-02
 categories:
   - Micky's Life
@@ -28,4 +28,3 @@ render_with_liquid: false
 	- 沒有所有的雜誌，像日本雜誌現在幾乎沒有（許願之後能有）
 - 優點：
 	- 超省錢省時，原本省錢是跑圖書館去看（可能還要跑好幾家），現在 app 直接看。
-
