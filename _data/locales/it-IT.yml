@@ -41,8 +41,7 @@ copyright:
     i termini di licenza Creative Commons Attribution 4.0 International (CC BY 4.0).
 
 meta: >- 
-  Servizio offerto da :PLATFORM con tema :THEME<br/>
-  Automatically sync posts from Medium with <a href="https://zhgchg.li/posts/en-medium-to-jekyll/" target="_blank">ZhgChg.Li</a>.
+  Servizio offerto da :PLATFORM con tema :THEME
   
 not_found:
   statement: Ci scusiamo, non è stato possibile trovare l'URL in questione. Potrebbe puntare ad una pagina non esistente.

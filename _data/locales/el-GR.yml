@@ -41,8 +41,7 @@ copyright:
     Creative Commons Attribution 4.0 International (CC BY 4.0) του δημιουργού.
 
 meta: >- 
-  Αξιοποιώντας την :PLATFORM theme :THEME<br/>
-  Automatically sync posts from Medium with <a href="https://zhgchg.li/posts/en-medium-to-jekyll/" target="_blank">ZhgChg.Li</a>.
+  Αξιοποιώντας την :PLATFORM theme :THEME
 
 not_found:
   statement: Συγνώμη, έχουμε τοποθετήσει λάθος αυτήν την διεύθυνση URL ή υποδεικνύει κάτι που δεν υπάρχει.

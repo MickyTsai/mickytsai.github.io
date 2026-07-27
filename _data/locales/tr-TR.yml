@@ -41,8 +41,7 @@ copyright:
     Kısaca sayfa linkini vererek değiştirebilir / paylaşabilirsiniz.
 
 meta: >-
-  :PLATFORM ve :THEME teması<br/>
-  Automatically sync posts from Medium with <a href="https://zhgchg.li/posts/en-medium-to-jekyll/" target="_blank">ZhgChg.Li</a>.
+  :PLATFORM ve :THEME teması
 
 not_found:
   statement: Üzgünüz, bu linki yanlış yerleştirdik veya var olmayan bir şeye işaret ediyor.

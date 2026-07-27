@@ -41,8 +41,7 @@ copyright:
     di bawah Lisensi Creative Commons Attribution 4.0 International (CC BY 4.0) oleh penulis.
 
 meta: >-
-  Didukung oleh :PLATFORM dengan tema :THEME<br/>
-  Automatically sync posts from Medium with <a href="https://zhgchg.li/posts/en-medium-to-jekyll/" target="_blank">ZhgChg.Li</a>.
+  Didukung oleh :PLATFORM dengan tema :THEME
 
 not_found:
   statement: Maaf, kami gagal menemukan URL itu atau memang mengarah ke sesuatu yang tidak ada.

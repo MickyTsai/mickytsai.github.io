@@ -9,10 +9,6 @@ on:
       - README.md
       - LICENSE
   workflow_dispatch:
-  workflow_run:
-    workflows: [ZMediumToMarkdown]
-    types:
-      - completed
 
 concurrency:
   group: "pages"

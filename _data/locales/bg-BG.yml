@@ -41,8 +41,7 @@ copyright:
     под лиценза Creative Commons Attribution 4.0 (CC BY 4.0) от автора.
 
 meta: >-
-  Създадено чрез :PLATFORM и :THEME тема<br/>
-  Automatically sync posts from Medium with <a href="https://zhgchg.li/posts/en-medium-to-jekyll/" target="_blank">ZhgChg.Li</a>.
+  Създадено чрез :PLATFORM и :THEME тема
 
 not_found:
   statement: Съжалявам, но на този URL адрес няма налично съдържание.

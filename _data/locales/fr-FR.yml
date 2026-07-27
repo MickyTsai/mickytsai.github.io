@@ -41,8 +41,7 @@ copyright:
     sous la licence Creative Commons Attribution 4.0 International (CC BY 4.0) par l'auteur.
 
 meta: >- 
-  Propulsé par :PLATFORM avec le thème :THEME<br/>
-  Automatically sync posts from Medium with <a href="https://zhgchg.li/posts/en-medium-to-jekyll/" target="_blank">ZhgChg.Li</a>.
+  Propulsé par :PLATFORM avec le thème :THEME
 
 not_found:
   statement: Désolé, nous avons égaré cette URL ou elle pointe vers quelque chose qui n'existe pas.

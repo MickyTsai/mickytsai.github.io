@@ -41,8 +41,7 @@ copyright:
     Creative Commons Attribution 4.0 International(CC BY 4.0) 라이선스에 따라 사용이 허가되었습니다.
 
 meta: >-
-  Powered by :PLATFORM with :THEME theme<br/>
-  Automatically sync posts from Medium with <a href="https://zhgchg.li/posts/en-medium-to-jekyll/" target="_blank">ZhgChg.Li</a>.
+  Powered by :PLATFORM with :THEME theme
 
 not_found:
   statement: 해당 URL은 존재하지 않습니다.

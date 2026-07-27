@@ -41,8 +41,7 @@ copyright:
     pod licencí Creative Commons Attribution 4.0 International (CC BY 4.0) Licence autora.
 
 meta: >- 
-  Použití :PLATFORM s motivem :THEME<br/>
-  Automatically sync posts from Medium with <a href="https://zhgchg.li/posts/en-medium-to-jekyll/" target="_blank">ZhgChg.Li</a>.
+  Použití :PLATFORM s motivem :THEME
 
 not_found:
   statement: Omlouváme se, adresu URL jsme špatně umístili nebo odkazuje na něco, co neexistuje.

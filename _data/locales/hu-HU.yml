@@ -42,8 +42,7 @@ copyright:
     hacsak másképp nincs jelezve.
 
 meta: >-
-  Készítve :THEME témával a :PLATFORM platformra.<br/>
-  Automatically sync posts from Medium with <a href="https://zhgchg.li/posts/en-medium-to-jekyll/" target="_blank">ZhgChg.Li</a>.
+  Készítve :THEME témával a :PLATFORM platformra.
 
 not_found:
   statement: Sajnáljuk, az URL-t rosszul helyeztük el, vagy valami nem létezőre mutat.
