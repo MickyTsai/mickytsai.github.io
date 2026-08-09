@@ -14,7 +14,7 @@ layout: editorial-default
     <h1>{{ page.title }}</h1>
     {% if page.description %}<p class="editorial-post-description">{{ page.description }}</p>{% endif %}
 
-    {% if page.image %}
+    {% if page.image and page.show_post_cover != false %}
       {% assign post_image = page.image.path | default: page.image %}
       <figure class="editorial-post-cover">
         <img src="{{ post_image | relative_url }}" alt="{{ page.image.alt | default: page.title }}">

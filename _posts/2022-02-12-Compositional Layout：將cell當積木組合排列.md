@@ -11,29 +11,27 @@ tags:
   - Collectionview
 description: 運用 UIKit 的 Compositional Layout 實作靈活排版與組合效果
 image:
-  path: /assets/c3f8ac17f46f/1*2vYuPf6kwDexC1GSssH6ww.gif
+  path: /assets/posts/compositional-layout/1*2vYuPf6kwDexC1GSssH6ww.gif
+show_post_cover: false
 render_with_liquid: false
 ---
-
-### Compositional Layout：將cell當積木組合排列
-#### 運用 UIKit 的 Compositional Layout 實作靈活排版與組合效果
 
 一般來說，在製作 CollectionView 時通常都是 Cell “一個個” 往右或往下堆疊，如果我要三個三個往右堆疊怎麼辦？又或者需求很奇葩，要一個大 Cell 後面接兩個小 Cell ?（巢狀結構）這樣怎麼辦
 
 
-![AppStore](/assets/c3f8ac17f46f/1*2vYuPf6kwDexC1GSssH6ww.gif)
+![AppStore](/assets/posts/compositional-layout/1*2vYuPf6kwDexC1GSssH6ww.gif)
 
 AppStore
 
 總不能直接坐三行 CollectionView吧？這時就可用 Compositional Layout
 
 
-![基本的 CollectionView 的 layout架構](/assets/c3f8ac17f46f/1*e_CVHFXalMN6MeEjkVYERw.png)
+![基本的 CollectionView 的 layout架構](/assets/posts/compositional-layout/1*e_CVHFXalMN6MeEjkVYERw.png)
 
 基本的 CollectionView 的 layout架構
 
 
-![Compositional Layout 的架構](/assets/c3f8ac17f46f/1*TR789C9JMghTqxrdXmzLsQ.png)
+![Compositional Layout 的架構](/assets/posts/compositional-layout/1*TR789C9JMghTqxrdXmzLsQ.png)
 
 Compositional Layout 的架構
 
@@ -179,7 +177,7 @@ extension ViewController: UICollectionViewDataSource {
 效果：
 
 
-![Item 垂直相疊的橫向滾動（像AppStore）](/assets/c3f8ac17f46f/1*8eRcNgWx0HE0JoCnUFTKaA.gif)
+![Item 垂直相疊的橫向滾動（像AppStore）](/assets/posts/compositional-layout/1*8eRcNgWx0HE0JoCnUFTKaA.gif)
 
 Item 垂直相疊的橫向滾動（像AppStore）
 
@@ -216,7 +214,7 @@ group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: nil, traili
 效果：
 
 
-![巢狀Cell](/assets/c3f8ac17f46f/1*f1WryAslSg9qHYxILyNOmA.gif)
+![巢狀Cell](/assets/posts/compositional-layout/1*f1WryAslSg9qHYxILyNOmA.gif)
 
 巢狀Cell
 

@@ -8,7 +8,7 @@ tags:
   - 
 description: 平常都是跑好幾家圖書館去看雜誌，現在用 app 能直接瀏覽大部分的雜誌，不用買電子閱讀器也能有相當不錯的閱讀體驗。
 image:
-  path: /assets/KonoLibraries/KonoLibrariesHomePage.png
+  path: /assets/posts/kono-libraries/KonoLibrariesHomePage.png
 render_with_liquid: false
 ---
 > 平常有習慣跑圖書館看雜誌的有福了！平常都是跑好幾家圖書館去看雜誌（每個分館進的雜誌不同），現在用 app 能直接瀏覽大部分的北市圖的雜誌，而且不用買電子閱讀器也能有相當不錯的閱讀體驗。
@@ -19,7 +19,7 @@ render_with_liquid: false
 - 螢幕大一點的手機 或 直接用 Mac
 - 下載 [Kono Libraries](https://apps.apple.com/tw/app/kono-libraries/id1153913439)
 
-![Kono Libraries on AppStore](/assets/KonoLibraries/KonoLibrariesOnAppStore.png)
+![Kono Libraries on AppStore](/assets/posts/kono-libraries/KonoLibrariesOnAppStore.png)
 
 ### 優點＆缺點
 - 缺點：

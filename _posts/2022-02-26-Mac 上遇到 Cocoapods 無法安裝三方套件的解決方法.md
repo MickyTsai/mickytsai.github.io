@@ -9,12 +9,10 @@ tags:
   - Cocoapods
 description: 新電腦總是還是再裝一次 Cocoapods，記錄一下處理過程方便日後參考。
 image:
-  path: /assets/fe3e91dee2fc/1*V-Vp9TYzPeo5T3Y-cud6jg.png
+  path: /assets/posts/cocoapods-installation/1*V-Vp9TYzPeo5T3Y-cud6jg.png
+show_post_cover: false
 render_with_liquid: false
 ---
-
-### Mac 上遇到 Cocoapods 無法安裝三方套件的解決方法
-#### 新電腦總是還是再裝一次 Cocoapods，記錄一下處理過程方便日後參考。
 
 第二次踩雷，這次爆炸了…\.
 
@@ -32,12 +30,12 @@ render_with_liquid: false
 
 
 
-![錯誤訊息上半部…\.因為很長，中間忽略](/assets/fe3e91dee2fc/1*V-Vp9TYzPeo5T3Y-cud6jg.png)
+![錯誤訊息上半部…\.因為很長，中間忽略](/assets/posts/cocoapods-installation/1*V-Vp9TYzPeo5T3Y-cud6jg.png)
 
 錯誤訊息上半部…\.因為很長，中間忽略
 
 
-![錯誤訊息下半部](/assets/fe3e91dee2fc/1*IbvCObe4V5Wa2thpqSCp9g.png)
+![錯誤訊息下半部](/assets/posts/cocoapods-installation/1*IbvCObe4V5Wa2thpqSCp9g.png)
 
 錯誤訊息下半部
 
@@ -67,7 +65,7 @@ brew install cocoapods
 
 
 
-![Homebrew安裝完時的警告提示](/assets/fe3e91dee2fc/1*8Z1N281TMxIKS4hnNYHI_A.png)
+![Homebrew安裝完時的警告提示](/assets/posts/cocoapods-installation/1*8Z1N281TMxIKS4hnNYHI_A.png)
 
 Homebrew安裝完時的警告提示
 
@@ -78,7 +76,7 @@ Homebrew安裝完時的警告提示
 這是大大找到解方，大致上內容意思就是要你找到 \. zshrc 這個檔案並加上裡面說明的路徑：
 
 
-![](/assets/fe3e91dee2fc/1*yJsI39IaozUdjlRQl4U8TA.png)
+![](/assets/posts/cocoapods-installation/1*yJsI39IaozUdjlRQl4U8TA.png)
 
 
 整理一下步驟：
@@ -90,7 +88,7 @@ Homebrew安裝完時的警告提示
 
 
 
-![輸入好後記得儲存（按esc結束編輯，輸入:wq 儲存並離開。要再編輯按i切換）](/assets/fe3e91dee2fc/1*LM3ehyoDUeRliRwQ7WdhNQ.png)
+![輸入好後記得儲存（按esc結束編輯，輸入:wq 儲存並離開。要再編輯按i切換）](/assets/posts/cocoapods-installation/1*LM3ehyoDUeRliRwQ7WdhNQ.png)
 
 輸入好後記得儲存（按esc結束編輯，輸入:wq 儲存並離開。要再編輯按i切換）
 - 重新打開終端機就完成了
