@@ -1,0 +1,12 @@
+<div class="editorial-story-list editorial-taxonomy-stories">
+  {% for post in include.posts %}
+    <article class="editorial-story-row">
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time>
+      <div>
+        <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+        <p>{{ post.description | default: post.excerpt | strip_html | truncate: 110 }}</p>
+      </div>
+      <i class="fas fa-arrow-right" aria-hidden="true"></i>
+    </article>
+  {% endfor %}
+</div>

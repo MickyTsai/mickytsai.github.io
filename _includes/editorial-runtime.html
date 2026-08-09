@@ -1,0 +1,37 @@
+<div class="editorial-drawer-mask" hidden></div>
+
+<div class="d-none" aria-hidden="true">
+  <button id="sidebar-trigger" type="button"></button>
+  <div id="mask"></div>
+  <button id="search-trigger" type="button"></button>
+  <button id="search-cancel" type="button"></button>
+  <span id="topbar-title"></span>
+  <div id="search"></div>
+  <div id="search-result-wrapper"></div>
+  <div id="search-results"></div>
+  <input id="search-input" type="search" tabindex="-1">
+  <div id="search-hints"></div>
+  <button id="back-to-top" type="button"></button>
+</div>
+
+<script>
+  (() => {
+    const menuButton = document.querySelector('.editorial-menu-button');
+    const sidebar = document.querySelector('#editorial-sidebar');
+    const mask = document.querySelector('.editorial-drawer-mask');
+
+    const closeMenu = () => {
+      sidebar?.classList.remove('open');
+      menuButton?.setAttribute('aria-expanded', 'false');
+      if (mask) mask.hidden = true;
+    };
+
+    menuButton?.addEventListener('click', () => {
+      const isOpen = sidebar?.classList.toggle('open') ?? false;
+      menuButton.setAttribute('aria-expanded', String(isOpen));
+      if (mask) mask.hidden = !isOpen;
+    });
+    mask?.addEventListener('click', closeMenu);
+    sidebar?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  })();
+</script>

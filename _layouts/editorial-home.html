@@ -33,77 +33,7 @@ layout: compress
     </button>
 
     <div class="editorial-shell">
-      <aside id="editorial-sidebar" class="editorial-sidebar" aria-label="網站導覽">
-        <a class="editorial-profile" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} 首頁">
-          <img src="{{ site.avatar | relative_url }}" width="156" height="156" alt="{{ site.social.name | default: site.title }}">
-        </a>
-
-        <div class="editorial-intro">
-          <p class="editorial-role">iOS Engineer</p>
-          <p>{{ site.tagline }}</p>
-          <span class="editorial-dot" aria-hidden="true"></span>
-        </div>
-
-        <nav class="editorial-nav" aria-label="主要導覽">
-          <a class="active" href="{{ '/' | relative_url }}">
-            <i class="fas fa-home fa-fw" aria-hidden="true"></i>
-            <span>首頁</span>
-          </a>
-          <a href="{{ '/archives/' | relative_url }}">
-            <i class="far fa-file-alt fa-fw" aria-hidden="true"></i>
-            <span>文章</span>
-          </a>
-          <a href="{{ '/categories/' | relative_url }}">
-            <i class="fas fa-layer-group fa-fw" aria-hidden="true"></i>
-            <span>分類</span>
-          </a>
-          <a href="{{ '/tags/' | relative_url }}">
-            <i class="fas fa-tags fa-fw" aria-hidden="true"></i>
-            <span>標籤</span>
-          </a>
-          <a href="{{ '/about/' | relative_url }}">
-            <i class="far fa-user fa-fw" aria-hidden="true"></i>
-            <span>關於</span>
-          </a>
-        </nav>
-
-        <div class="editorial-categories">
-          <p class="editorial-eyebrow">分類</p>
-          <ul>
-            {% assign sorted_categories = site.categories | sort %}
-            {% for category in sorted_categories limit: 7 %}
-              {% assign category_slug = category[0] | slugify %}
-              <li>
-                <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}">
-                  <span>{{ category[0] }}</span>
-                  <span>{{ category[1].size }}</span>
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="editorial-sidebar-footer">
-          <p>© {{ 'now' | date: '%Y' }} {{ site.social.name | default: site.title }}</p>
-          <div class="editorial-socials">
-            <a href="https://github.com/{{ site.github.username }}" target="_blank" rel="noopener" aria-label="GitHub">
-              <i class="fab fa-github" aria-hidden="true"></i>
-            </a>
-            {% for entry in site.data.contact %}
-              {% if entry.url %}
-                {% assign contact_url = entry.url %}
-              {% elsif entry.type == 'email' %}
-                {% assign contact_url = 'mailto:' | append: site.social.email %}
-              {% elsif entry.type == 'rss' %}
-                {% assign contact_url = '/feed.xml' | relative_url %}
-              {% endif %}
-              <a href="{{ contact_url }}" {% unless entry.noblank %}target="_blank" rel="noopener"{% endunless %} aria-label="{{ entry.type }}">
-                <i class="{{ entry.icon }}" aria-hidden="true"></i>
-              </a>
-            {% endfor %}
-          </div>
-        </div>
-      </aside>
+      {% include editorial-sidebar.html %}
 
       <main class="editorial-main" id="main-content">
         <section class="editorial-featured" id="featured" aria-labelledby="featured-title">
@@ -221,30 +151,13 @@ layout: compress
       </aside>
     </div>
 
-    <div class="editorial-drawer-mask" hidden></div>
-
-    <div class="d-none" aria-hidden="true">
-      <button id="sidebar-trigger" type="button"></button>
-      <div id="mask"></div>
-      <button id="search-trigger" type="button"></button>
-      <button id="search-cancel" type="button"></button>
-      <span id="topbar-title"></span>
-      <div id="search"></div>
-      <div id="search-result-wrapper"></div>
-      <div id="search-results"></div>
-      <input id="search-input" type="search" tabindex="-1">
-      <div id="search-hints"></div>
-      <button id="back-to-top" type="button"></button>
-    </div>
+    {% include editorial-runtime.html %}
 
     <script>
       (() => {
         const search = document.querySelector('#editorial-search');
         const cards = [...document.querySelectorAll('.editorial-card')];
         const empty = document.querySelector('.editorial-empty');
-        const menuButton = document.querySelector('.editorial-menu-button');
-        const sidebar = document.querySelector('#editorial-sidebar');
-        const mask = document.querySelector('.editorial-drawer-mask');
 
         search?.addEventListener('input', (event) => {
           const query = event.target.value.trim().toLocaleLowerCase();
@@ -256,20 +169,6 @@ layout: compress
           });
           empty.hidden = visible !== 0;
         });
-
-        const closeMenu = () => {
-          sidebar.classList.remove('open');
-          menuButton.setAttribute('aria-expanded', 'false');
-          mask.hidden = true;
-        };
-
-        menuButton?.addEventListener('click', () => {
-          const isOpen = sidebar.classList.toggle('open');
-          menuButton.setAttribute('aria-expanded', String(isOpen));
-          mask.hidden = !isOpen;
-        });
-        mask?.addEventListener('click', closeMenu);
-        sidebar?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
       })();
     </script>
   </body>

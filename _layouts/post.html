@@ -1,0 +1,49 @@
+---
+layout: editorial-default
+---
+
+{% include lang.html %}
+
+<article class="editorial-post">
+  <header class="editorial-post-header">
+    <div class="editorial-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y.%m.%d' }}</time>
+      <span aria-hidden="true">•</span>
+      <span>{% include read-time.html content=content prompt=true lang=lang %}</span>
+    </div>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}<p class="editorial-post-description">{{ page.description }}</p>{% endif %}
+
+    {% if page.image %}
+      {% assign post_image = page.image.path | default: page.image %}
+      <figure class="editorial-post-cover">
+        <img src="{{ post_image | relative_url }}" alt="{{ page.image.alt | default: page.title }}">
+        {% if page.image.alt %}<figcaption>{{ page.image.alt }}</figcaption>{% endif %}
+      </figure>
+    {% endif %}
+  </header>
+
+  <div class="editorial-prose editorial-post-content">
+    {{ content }}
+  </div>
+
+  <footer class="editorial-post-footer">
+    {% if page.categories.size > 0 %}
+      <div>
+        <span class="editorial-eyebrow">分類</span>
+        {% for category in page.categories %}
+          {% assign category_slug = category | slugify %}
+          <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}">{{ category }}</a>{% unless forloop.last %}<span>・</span>{% endunless %}
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if page.tags.size > 0 %}
+      <div class="editorial-post-tags">
+        {% for tag in page.tags %}
+          {% assign tag_slug = tag | slugify %}
+          <a href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}"># {{ tag }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </footer>
+</article>

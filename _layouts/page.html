@@ -1,0 +1,17 @@
+---
+layout: editorial-default
+---
+
+{% include lang.html %}
+{% assign tab_key = page.title | downcase %}
+{% assign page_title = site.data.locales[lang].tabs[tab_key] | default: page.title %}
+
+<article class="editorial-page-article">
+  <header class="editorial-page-header">
+    <p class="editorial-eyebrow">{{ site.title }}</p>
+    <h1>{{ page_title }}</h1>
+  </header>
+  <div class="editorial-prose">
+    {{ content }}
+  </div>
+</article>

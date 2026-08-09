@@ -1,0 +1,22 @@
+---
+layout: editorial-default
+---
+
+<section class="editorial-page-article">
+  <header class="editorial-page-header">
+    <p class="editorial-eyebrow">Index</p>
+    <h1>標籤</h1>
+    <p>從關鍵字找到感興趣的內容。</p>
+  </header>
+
+  <div class="editorial-tag-index">
+    {% assign sorted_tags = site.tags | sort %}
+    {% for tag in sorted_tags %}
+      {% assign tag_slug = tag[0] | slugify %}
+      <a href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}">
+        <span># {{ tag[0] }}</span>
+        <small>{{ tag[1].size }}</small>
+      </a>
+    {% endfor %}
+  </div>
+</section>

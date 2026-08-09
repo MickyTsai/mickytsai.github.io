@@ -1,0 +1,38 @@
+---
+layout: editorial-default
+---
+
+<section class="editorial-page-article">
+  <header class="editorial-page-header editorial-page-header-row">
+    <div>
+      <p class="editorial-eyebrow">All stories</p>
+      <h1>文章</h1>
+    </div>
+    <p class="editorial-page-count">{{ site.posts | size }} 篇</p>
+  </header>
+
+  <div class="editorial-archive">
+    {% assign last_year = '' %}
+    {% for post in site.posts %}
+      {% assign post_year = post.date | date: '%Y' %}
+      {% if post_year != last_year %}
+        {% unless forloop.first %}</div></section>{% endunless %}
+        <section class="editorial-year-group" aria-labelledby="year-{{ post_year }}">
+          <h2 id="year-{{ post_year }}">{{ post_year }}</h2>
+          <div class="editorial-story-list">
+        {% assign last_year = post_year %}
+      {% endif %}
+
+      <article class="editorial-story-row">
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%m.%d' }}</time>
+        <div>
+          <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+          <p>{{ post.description | default: post.excerpt | strip_html | truncate: 96 }}</p>
+        </div>
+        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+      </article>
+
+      {% if forloop.last %}</div></section>{% endif %}
+    {% endfor %}
+  </div>
+</section>
