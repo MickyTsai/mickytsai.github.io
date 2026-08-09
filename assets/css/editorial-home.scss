@@ -28,6 +28,18 @@ body.editorial-home-page {
   line-height: 1.55;
 }
 
+// Chirpy switches its global heading token to a light gray in dark mode.
+// This layout always uses a light paper background, so keep its headings on
+// the matching editorial ink color instead of inheriting the theme token.
+.editorial-home-page h1,
+.editorial-home-page h2,
+.editorial-home-page h3,
+.editorial-home-page h4,
+.editorial-home-page h5,
+.editorial-home-page h6 {
+  color: var(--editorial-ink);
+}
+
 .editorial-home-page *,
 .editorial-home-page *::before,
 .editorial-home-page *::after {
