@@ -1,0 +1,27 @@
+---
+layout: editorial-default
+---
+
+<section class="editorial-page-article">
+  <header class="editorial-page-header">
+    <p class="editorial-eyebrow">Topics</p>
+    <h1>分類</h1>
+    <p>依照主題探索文章與筆記。</p>
+  </header>
+
+  <div class="editorial-taxonomy-grid">
+    {% assign sorted_categories = site.categories | sort %}
+    {% for category in sorted_categories %}
+      {% assign category_name = category[0] %}
+      {% assign category_slug = category_name | slugify %}
+      <a class="editorial-taxonomy-card" href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}">
+        <span class="editorial-taxonomy-icon"><i class="far fa-folder-open" aria-hidden="true"></i></span>
+        <span>
+          <strong>{{ category_name }}</strong>
+          <small>{{ category[1].size }} 篇文章</small>
+        </span>
+        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    {% endfor %}
+  </div>
+</section>

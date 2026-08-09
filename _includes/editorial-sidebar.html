@@ -1,0 +1,72 @@
+<aside id="editorial-sidebar" class="editorial-sidebar" aria-label="網站導覽">
+  <a class="editorial-profile" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} 首頁">
+    <img src="{{ site.avatar | relative_url }}" width="156" height="156" alt="{{ site.social.name | default: site.title }}">
+  </a>
+
+  <div class="editorial-intro">
+    <p class="editorial-role">iOS Engineer</p>
+    <p>{{ site.tagline }}</p>
+    <span class="editorial-dot" aria-hidden="true"></span>
+  </div>
+
+  {% assign current_path = page.url | default: '/' %}
+  <nav class="editorial-nav" aria-label="主要導覽">
+    <a {% if current_path == '/' %}class="active" aria-current="page"{% endif %} href="{{ '/' | relative_url }}">
+      <i class="fas fa-home fa-fw" aria-hidden="true"></i>
+      <span>首頁</span>
+    </a>
+    <a {% if current_path == '/archives/' or page.layout == 'post' %}class="active" aria-current="page"{% endif %} href="{{ '/archives/' | relative_url }}">
+      <i class="far fa-file-alt fa-fw" aria-hidden="true"></i>
+      <span>文章</span>
+    </a>
+    <a {% if current_path contains '/categories/' %}class="active" aria-current="page"{% endif %} href="{{ '/categories/' | relative_url }}">
+      <i class="fas fa-layer-group fa-fw" aria-hidden="true"></i>
+      <span>分類</span>
+    </a>
+    <a {% if current_path contains '/tags/' %}class="active" aria-current="page"{% endif %} href="{{ '/tags/' | relative_url }}">
+      <i class="fas fa-tags fa-fw" aria-hidden="true"></i>
+      <span>標籤</span>
+    </a>
+    <a {% if current_path == '/about/' %}class="active" aria-current="page"{% endif %} href="{{ '/about/' | relative_url }}">
+      <i class="far fa-user fa-fw" aria-hidden="true"></i>
+      <span>關於</span>
+    </a>
+  </nav>
+
+  <div class="editorial-categories">
+    <p class="editorial-eyebrow">分類</p>
+    <ul>
+      {% assign sorted_categories = site.categories | sort %}
+      {% for category in sorted_categories limit: 7 %}
+        {% assign category_slug = category[0] | slugify %}
+        <li>
+          <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}">
+            <span>{{ category[0] }}</span>
+            <span>{{ category[1].size }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="editorial-sidebar-footer">
+    <p>© {{ 'now' | date: '%Y' }} {{ site.social.name | default: site.title }}</p>
+    <div class="editorial-socials">
+      <a href="https://github.com/{{ site.github.username }}" target="_blank" rel="noopener" aria-label="GitHub">
+        <i class="fab fa-github" aria-hidden="true"></i>
+      </a>
+      {% for entry in site.data.contact %}
+        {% if entry.url %}
+          {% assign contact_url = entry.url %}
+        {% elsif entry.type == 'email' %}
+          {% assign contact_url = 'mailto:' | append: site.social.email %}
+        {% elsif entry.type == 'rss' %}
+          {% assign contact_url = '/feed.xml' | relative_url %}
+        {% endif %}
+        <a href="{{ contact_url }}" {% unless entry.noblank %}target="_blank" rel="noopener"{% endunless %} aria-label="{{ entry.type }}">
+          <i class="{{ entry.icon }}" aria-hidden="true"></i>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</aside>

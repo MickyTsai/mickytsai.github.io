@@ -1,0 +1,36 @@
+---
+layout: compress
+---
+
+<!doctype html>
+
+{% include origin-type.html %}
+{% include lang.html %}
+
+{% if site.theme_mode %}
+  {% capture prefer_mode %}data-mode="{{ site.theme_mode }}"{% endcapture %}
+{% endif %}
+
+<html lang="{{ page.lang | default: site.alt_lang | default: site.lang }}" {{ prefer_mode }}>
+  {% include head.html %}
+  <link rel="stylesheet" href="{{ '/assets/css/editorial-home.css' | relative_url }}">
+
+  <body class="editorial-home-page editorial-inner-page">
+    <button class="editorial-menu-button" type="button" aria-controls="editorial-sidebar" aria-expanded="false">
+      <i class="fas fa-bars" aria-hidden="true"></i>
+      <span>選單</span>
+    </button>
+
+    <div class="editorial-shell">
+      {% include editorial-sidebar.html %}
+
+      <main class="editorial-main editorial-inner-main" id="main-content">
+        {{ content }}
+      </main>
+
+      {% include editorial-rail.html %}
+    </div>
+
+    {% include editorial-runtime.html %}
+  </body>
+</html>

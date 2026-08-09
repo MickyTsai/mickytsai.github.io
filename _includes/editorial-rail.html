@@ -1,0 +1,39 @@
+<aside class="editorial-rail" aria-label="延伸導覽">
+  {% assign rail_title = page.title | default: site.title %}
+  {% if page.url == '/archives/' %}
+    {% assign rail_title = '文章' %}
+  {% elsif page.url == '/categories/' %}
+    {% assign rail_title = '分類' %}
+  {% elsif page.url == '/tags/' %}
+    {% assign rail_title = '標籤' %}
+  {% elsif page.url == '/about/' %}
+    {% assign rail_title = '關於' %}
+  {% endif %}
+  <div class="editorial-rail-block">
+    <p class="editorial-eyebrow">正在閱讀</p>
+    <p class="editorial-rail-title">{{ rail_title }}</p>
+  </div>
+
+  <div class="editorial-rail-block">
+    <p class="editorial-eyebrow">快速前往</p>
+    <nav class="editorial-page-nav" aria-label="快速前往">
+      <a href="{{ '/archives/' | relative_url }}"><span>所有文章</span><i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      <a href="{{ '/categories/' | relative_url }}"><span>瀏覽分類</span><i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      <a href="{{ '/tags/' | relative_url }}"><span>瀏覽標籤</span><i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+    </nav>
+  </div>
+
+  <div class="editorial-rail-block">
+    <p class="editorial-eyebrow">近期文章</p>
+    <div class="editorial-notes">
+      {% for post in site.posts limit: 4 %}
+        <a href="{{ post.url | relative_url }}">
+          <span>{{ post.title }}</span>
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <blockquote>“Simplicity is the ultimate sophistication.”<cite>— Leonardo da Vinci</cite></blockquote>
+</aside>
