@@ -1,0 +1,19 @@
+---
+layout: null
+---
+<!doctype html>
+<html lang="{{ site.lang | default: 'zh-TW' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <title>文章已移動</title>
+    <link rel="canonical" href="{{ page.redirect_to | absolute_url }}">
+    <meta http-equiv="refresh" content="0; url={{ page.redirect_to | relative_url }}">
+    <script>
+      window.location.replace({{ page.redirect_to | relative_url | jsonify }} + window.location.search + window.location.hash);
+    </script>
+  </head>
+  <body>
+    <p>文章已移動，<a href="{{ page.redirect_to | relative_url }}">點此前往新網址</a>。</p>
+  </body>
+</html>

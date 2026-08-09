@@ -1,5 +1,6 @@
 ---
 title: 省錢省時 看雜誌 app 神器！Kono Libraries
+permalink: /posts/省錢省時-看雜誌-app-神器-Kono-Libraries/
 author: micky
 date: 2025-10-02
 categories:

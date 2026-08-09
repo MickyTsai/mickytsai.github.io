@@ -1,5 +1,6 @@
 ---
 title: Compositional Layout：將cell當積木組合排列
+permalink: /posts/Compositional-Layout-將cell當積木組合排列/
 author: micky
 date: 2022-02-12T13:53:03.348+0000
 last_modified_at: 2025-10-01T10:10:43.472+0000

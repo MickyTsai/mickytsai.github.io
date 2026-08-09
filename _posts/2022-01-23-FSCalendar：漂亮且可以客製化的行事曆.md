@@ -1,5 +1,6 @@
 ---
 title: FSCalendar：漂亮且可以客製化的行事曆
+permalink: /posts/FSCalendar-漂亮且可以客製化的行事曆/
 author: micky
 date: 2022-01-23T14:35:37.547+0000
 last_modified_at: 2025-10-01T10:13:00.721+0000
