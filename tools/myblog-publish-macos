@@ -1,45 +1,35 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
-if [[ $# -ne 1 ]]; then
-  osascript -e 'display alert "無法發布 MyBlog" message "請從 Ulysses 匯出一篇 TextBundle 後再執行此捷徑。" as critical'
+if [[ $# -ne 3 ]]; then
+  printf '無法發布 MyBlog：需要 TextBundle、分類與標籤三個參數。\n' >&2
   exit 1
 fi
 
 bundle_path="$1"
+category="$2"
+tags="$3"
+
+# Shortcuts may preserve harmless whitespace around a list item. Remove only
+# leading and trailing whitespace so paths containing spaces remain intact.
+bundle_path="${bundle_path#"${bundle_path%%[![:space:]]*}"}"
+bundle_path="${bundle_path%"${bundle_path##*[![:space:]]}"}"
+category="${category#"${category%%[![:space:]]*}"}"
+category="${category%"${category##*[![:space:]]}"}"
+
 if [[ ! -d "$bundle_path" || "${bundle_path##*.}" != "textbundle" ]]; then
-  osascript -e 'display alert "格式不正確" message "發布 MyBlog 只接受 Ulysses 匯出的 TextBundle。" as critical'
+  printf '格式不正確：發布 MyBlog 只接受 Ulysses 匯出的 TextBundle。\n' >&2
+  exit 1
+fi
+
+if [[ -z "$category" ]]; then
+  printf '無法發布 MyBlog：文章分類不能留空。\n' >&2
   exit 1
 fi
 
 script_directory="$(cd "$(dirname "$0")" && pwd)"
 repo_root="$(cd "$script_directory/.." && pwd)"
-article_name="$(basename "$bundle_path" .textbundle)"
-
-category="$(osascript <<'APPLESCRIPT'
-set categoryChoices to {"Micky's Life", "CMoney Learning", "CubeApp Playing"}
-set selectedCategory to choose from list categoryChoices with title "發布 MyBlog" with prompt "選擇文章分類" default items {"Micky's Life"} OK button name "繼續" cancel button name "取消"
-if selectedCategory is false then error number -128
-return item 1 of selectedCategory
-APPLESCRIPT
-)"
-
-tags="$(osascript <<'APPLESCRIPT'
-set dialogResult to display dialog "請用逗號分隔標籤；沒有標籤可以留空。" with title "發布 MyBlog" default answer "" buttons {"取消", "繼續"} default button "繼續" cancel button "取消"
-return text returned of dialogResult
-APPLESCRIPT
-)"
-
-osascript - "$article_name" "$category" "$tags" <<'APPLESCRIPT'
-on run arguments
-  set articleName to item 1 of arguments
-  set categoryName to item 2 of arguments
-  set tagNames to item 3 of arguments
-  if tagNames is "" then set tagNames to "無"
-  display dialog "文章：" & articleName & return & "分類：" & categoryName & return & "標籤：" & tagNames & return & return & "接下來會檢查網站、建立 Git commit 並推送至 GitHub。" with title "確認發布 MyBlog" buttons {"取消", "發布"} default button "發布" cancel button "取消" with icon caution
-end run
-APPLESCRIPT
 
 publish_output="$(ruby "$repo_root/tools/myblog" publish "$bundle_path" --category "$category" --tags "$tags")"
 printf '%s\n' "$publish_output"
@@ -48,13 +38,3 @@ published_url="$(printf '%s\n' "$publish_output" | sed -n 's/^✓ 網址：//p')
 if [[ -n "$published_url" ]]; then
   printf '%s' "$published_url" | pbcopy
 fi
-
-osascript - "$article_name" "$published_url" <<'APPLESCRIPT'
-on run arguments
-  set articleName to item 1 of arguments
-  set publishedURL to item 2 of arguments
-  set resultMessage to "文章已推送，GitHub Actions 正在部署。"
-  if publishedURL is not "" then set resultMessage to resultMessage & return & return & "網址已複製：" & return & publishedURL
-  display dialog resultMessage with title "MyBlog 發布完成" buttons {"好"} default button "好"
-end run
-APPLESCRIPT
