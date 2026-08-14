@@ -32,3 +32,6 @@ assets/js/dist
 
 # Obsidian configurations
 .obsidian/
+
+# Ulysses configurations
+.Ulysses-*.plist

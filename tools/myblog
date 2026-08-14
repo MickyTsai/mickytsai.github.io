@@ -1,0 +1,416 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "date"
+require "fileutils"
+require "json"
+require "open3"
+require "optparse"
+require "pathname"
+require "tmpdir"
+require "uri"
+
+class MyBlogTextBundle
+  IMAGE_PATTERN = /!\[([^\]]*)\]\(([^)]+)\)/
+
+  attr_reader :bundle_path, :markdown_path, :assets_path, :title, :body,
+              :description, :images
+
+  def initialize(path)
+    @bundle_path = Pathname(path).expand_path
+    @markdown_path = @bundle_path.join("text.md")
+    @assets_path = @bundle_path.join("assets")
+
+    validate_bundle!
+    parse_markdown!
+  end
+
+  def rendered_body(asset_web_root)
+    body.gsub(IMAGE_PATTERN) do
+      alt = Regexp.last_match(1)
+      source = Regexp.last_match(2)
+      decoded_source = URI::DEFAULT_PARSER.unescape(source)
+
+      unless decoded_source.start_with?("assets/")
+        next Regexp.last_match(0)
+      end
+
+      filename = safe_asset_name(File.basename(decoded_source))
+      "![#{alt}](#{asset_web_root}/#{filename})"
+    end
+  end
+
+  def asset_mappings(asset_web_root)
+    images.filter_map do |image|
+      decoded_source = URI::DEFAULT_PARSER.unescape(image.fetch(:source))
+      next unless decoded_source.start_with?("assets/")
+
+      source_path = bundle_path.join(decoded_source).cleanpath
+      unless source_path.to_s.start_with?(assets_path.cleanpath.to_s + File::SEPARATOR)
+        raise ArgumentError, "圖片路徑超出 TextBundle assets：#{image.fetch(:source)}"
+      end
+      raise ArgumentError, "找不到圖片：#{source_path}" unless source_path.file?
+
+      filename = safe_asset_name(source_path.basename.to_s)
+      {
+        source: source_path,
+        web_path: "#{asset_web_root}/#{filename}"
+      }
+    end
+  end
+
+  private
+
+  def validate_bundle!
+    raise ArgumentError, "找不到 TextBundle：#{bundle_path}" unless bundle_path.directory?
+    raise ArgumentError, "TextBundle 缺少 text.md：#{bundle_path}" unless markdown_path.file?
+  end
+
+  def parse_markdown!
+    markdown = markdown_path.read(encoding: "UTF-8").gsub("\r\n", "\n")
+    lines = markdown.lines
+    heading_index = lines.index { |line| !line.strip.empty? }
+    heading = heading_index && lines.fetch(heading_index).match(/^#\s+(.+?)\s*$/)
+    raise ArgumentError, "文章第一個非空白行必須是 H1 標題，例如：# 我的文章" unless heading
+
+    @title = heading[1].strip
+    @body = lines.reject.with_index { |_line, index| index == heading_index }.join.sub(/\A\s+/, "")
+    @description = first_text_paragraph(@body)
+    raise ArgumentError, "標題下方需要至少一段文字，才能產生 description" if @description.empty?
+
+    @images = @body.scan(IMAGE_PATTERN).map do |alt, source|
+      { alt: alt, source: source }
+    end
+  end
+
+  def first_text_paragraph(markdown)
+    paragraphs = markdown.split(/\n\s*\n/).map(&:strip)
+    paragraph = paragraphs.find do |candidate|
+      !candidate.empty? &&
+        !candidate.start_with?("#", "!", "```", "~~~")
+    end
+
+    return "" unless paragraph
+
+    paragraph
+      .gsub(/^>\s?/, "")
+      .gsub(/!\[[^\]]*\]\([^)]+\)/, "")
+      .gsub(/\[([^\]]+)\]\([^)]+\)/, "\\1")
+      .gsub(/[*_`~]/, "")
+      .gsub(/\s+/, " ")
+      .strip
+  end
+
+  def safe_asset_name(filename)
+    filename
+      .unicode_normalize(:nfc)
+      .tr("/\\", "-")
+      .gsub(/\s+/, "-")
+      .gsub(/-+/, "-")
+  end
+end
+
+class MyBlogPostPreview
+  attr_reader :bundle, :date, :category, :tags, :slug
+
+  def initialize(bundle:, date:, category:, tags:)
+    @bundle = bundle
+    @date = date
+    @category = category
+    @tags = tags
+    @slug = slugify(bundle.title)
+  end
+
+  def filename
+    "#{date}-#{slug}.md"
+  end
+
+  def asset_web_root
+    "/assets/posts/#{slug}"
+  end
+
+  def front_matter
+    data = {
+      "title" => bundle.title,
+      "permalink" => "/posts/#{slug}/",
+      "author" => "micky",
+      "date" => date.to_s,
+      "categories" => [category],
+      "tags" => tags,
+      "description" => bundle.description,
+      "render_with_liquid" => false
+    }
+
+    first_image = bundle.asset_mappings(asset_web_root).first
+    data["image"] = { "path" => first_image.fetch(:web_path) } if first_image
+
+    yaml_lines = data.flat_map do |key, value|
+      case value
+      when Array
+        if value.empty?
+          ["#{key}: []"]
+        else
+          ["#{key}:", *value.map { |item| "  - #{yaml_scalar(item)}" }]
+        end
+      when Hash
+        ["#{key}:", *value.map { |child_key, child_value| "  #{child_key}: #{yaml_scalar(child_value)}" }]
+      else
+        ["#{key}: #{yaml_scalar(value)}"]
+      end
+    end
+
+    (["---"] + yaml_lines + ["---"]).join("\n")
+  end
+
+  def markdown
+    "#{front_matter}\n#{bundle.rendered_body(asset_web_root).rstrip}\n"
+  end
+
+  def write_to(root)
+    root = Pathname(root).expand_path
+    post_path = root.join("_posts", filename)
+    asset_directory = root.join("assets", "posts", slug)
+
+    FileUtils.mkdir_p(post_path.dirname)
+    post_path.write(markdown, encoding: "UTF-8")
+
+    mappings = bundle.asset_mappings(asset_web_root)
+    ensure_unique_asset_names!(mappings)
+    FileUtils.mkdir_p(asset_directory) unless mappings.empty?
+    mappings.each do |mapping|
+      destination = asset_directory.join(File.basename(mapping.fetch(:web_path)))
+      FileUtils.cp(mapping.fetch(:source), destination)
+    end
+
+    { post: post_path, assets: asset_directory, mappings: mappings }
+  end
+
+  private
+
+  def ensure_unique_asset_names!(mappings)
+    duplicate = mappings
+      .group_by { |mapping| File.basename(mapping.fetch(:web_path)) }
+      .find { |_filename, entries| entries.length > 1 }
+    return unless duplicate
+
+    raise ArgumentError, "轉換後出現重複圖片檔名：#{duplicate.first}"
+  end
+
+  def slugify(title)
+    slug = title
+      .unicode_normalize(:nfc)
+      .tr("/\\", "-")
+      .gsub(/[\x00-\x1f]/, "")
+      .gsub(/\s+/, "-")
+      .gsub(/-+/, "-")
+      .sub(/\A[.\-]+/, "")
+      .sub(/[.\-]+\z/, "")
+
+    raise ArgumentError, "無法從標題產生文章網址" if slug.empty?
+
+    slug
+  end
+
+  def yaml_scalar(value)
+    return value.to_s if value == true || value == false
+
+    value.to_s.to_json
+  end
+end
+
+class MyBlogPreviewCheck
+  COPY_EXCLUSIONS = %w[
+    .bundle
+    .git
+    .jekyll-cache
+    .jekyll-metadata
+    .myblog
+    _site
+  ].freeze
+
+  def initialize(repo_root:, preview:)
+    @repo_root = Pathname(repo_root).expand_path
+    @preview = preview
+  end
+
+  def run
+    Dir.mktmpdir("myblog-preview-") do |temporary_directory|
+      temporary_root = Pathname(temporary_directory)
+      source = temporary_root.join("source")
+      destination = temporary_root.join("site")
+      FileUtils.mkdir_p(source)
+      copy_site_source(source)
+      output = @preview.write_to(source)
+
+      run_command(
+        { "JEKYLL_ENV" => "production" },
+        "bundle", "exec", "jekyll", "build",
+        "--source", source.to_s,
+        "--destination", destination.to_s
+      )
+      run_command(
+        {},
+        "bundle", "exec", "htmlproofer", destination.to_s,
+        "--disable-external",
+        "--no-enforce-https",
+        "--ignore-empty-alt",
+        "--ignore-urls", "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+      )
+
+      output
+    end
+  end
+
+  private
+
+  def copy_site_source(destination)
+    @repo_root.children.each do |entry|
+      next if COPY_EXCLUSIONS.include?(entry.basename.to_s)
+
+      FileUtils.cp_r(entry, destination, preserve: true)
+    end
+  end
+
+  def run_command(environment, *command)
+    stdout, stderr, status = Open3.capture3(environment, *command, chdir: @repo_root.to_s)
+    return if status.success?
+
+    details = [stdout, stderr].reject(&:empty?).join("\n")
+    raise ArgumentError, "驗證失敗：#{command.join(' ')}\n#{details}"
+  end
+end
+
+class MyBlogPublisher
+  def initialize(repo_root:, preview:)
+    @repo_root = Pathname(repo_root).expand_path
+    @preview = preview
+  end
+
+  def publish
+    ensure_repo_is_ready!
+    ensure_destination_is_available!
+
+    MyBlogPreviewCheck.new(repo_root: @repo_root, preview: @preview).run
+    output = @preview.write_to(@repo_root)
+    relative_post = output.fetch(:post).relative_path_from(@repo_root).to_s
+    relative_assets = output.fetch(:assets).relative_path_from(@repo_root).to_s
+    paths = [relative_post]
+    paths << relative_assets unless output.fetch(:mappings).empty?
+
+    run_git("add", "--", *paths)
+    run_git("diff", "--cached", "--check")
+    raise ArgumentError, "沒有可發布的文章變更" if git_success?("diff", "--cached", "--quiet")
+
+    run_git("commit", "-m", "Publish: #{@preview.bundle.title}")
+    run_git("push", "origin", "main")
+
+    {
+      post: output.fetch(:post),
+      assets: output.fetch(:mappings).length,
+      url: "https://mickytsai.com/posts/#{@preview.slug}/"
+    }
+  rescue StandardError
+    warn "發布未完成。若文章檔案已產生，它仍保留在工作目錄中，沒有自動刪除。"
+    raise
+  end
+
+  private
+
+  def ensure_repo_is_ready!
+    branch = git_output("branch", "--show-current").strip
+    raise ArgumentError, "發布前必須位於 main 分支，目前是：#{branch}" unless branch == "main"
+
+    status = git_output("status", "--porcelain", "--untracked-files=all")
+    return if status.strip.empty?
+
+    raise ArgumentError, "發布前 Git 工作目錄必須乾淨：\n#{status}"
+  end
+
+  def ensure_destination_is_available!
+    post = @repo_root.join("_posts", @preview.filename)
+    assets = @repo_root.join("assets", "posts", @preview.slug)
+    raise ArgumentError, "文章已存在，為避免覆寫已停止：#{post}" if post.exist?
+    raise ArgumentError, "圖片資料夾已存在，為避免覆寫已停止：#{assets}" if assets.exist?
+  end
+
+  def git_output(*arguments)
+    stdout, stderr, status = Open3.capture3("git", *arguments, chdir: @repo_root.to_s)
+    return stdout if status.success?
+
+    raise ArgumentError, "Git 指令失敗：git #{arguments.join(' ')}\n#{stderr}"
+  end
+
+  def git_success?(*arguments)
+    _stdout, _stderr, status = Open3.capture3("git", *arguments, chdir: @repo_root.to_s)
+    status.success?
+  end
+
+  def run_git(*arguments)
+    git_output(*arguments)
+  end
+end
+
+def parse_tags(value)
+  value.to_s.split(",").map(&:strip).reject(&:empty?).uniq
+end
+
+options = {
+  category: "Micky's Life",
+  tags: [],
+  date: Date.today
+}
+
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: ruby tools/myblog <preview|check|publish> TEXTBUNDLE [options]"
+  opts.on("--category CATEGORY", "文章分類（預設：Micky's Life）") { |value| options[:category] = value }
+  opts.on("--tags TAGS", "以逗號分隔的標籤") { |value| options[:tags] = parse_tags(value) }
+  opts.on("--date YYYY-MM-DD", "發布日期") { |value| options[:date] = Date.iso8601(value) }
+end
+
+begin
+  parser.parse!
+  command = ARGV.shift
+  bundle_path = ARGV.shift
+  raise ArgumentError, parser.to_s unless %w[preview check publish].include?(command) && bundle_path && ARGV.empty?
+  raise ArgumentError, "category 不可為空白" if options.fetch(:category).strip.empty?
+
+  bundle = MyBlogTextBundle.new(bundle_path)
+  preview = MyBlogPostPreview.new(
+    bundle: bundle,
+    date: options.fetch(:date),
+    category: options.fetch(:category),
+    tags: options.fetch(:tags)
+  )
+
+  if command == "publish"
+    output = MyBlogPublisher.new(
+      repo_root: Pathname(__dir__).parent,
+      preview: preview
+    ).publish
+    puts "✓ 文章已發布"
+    puts "✓ 文章：#{output.fetch(:post).relative_path_from(Pathname(__dir__).parent)}"
+    puts "✓ 圖片：#{output.fetch(:assets)} 張"
+    puts "✓ 網址：#{output.fetch(:url)}"
+  elsif command == "check"
+    output = MyBlogPreviewCheck.new(
+      repo_root: Pathname(__dir__).parent,
+      preview: preview
+    ).run
+    puts "✓ TextBundle 格式正確"
+    puts "✓ Jekyll 正式環境建置成功"
+    puts "✓ 站內連結與 HTML 檢查成功"
+    puts "✓ 測試文章：#{output.fetch(:post).basename}"
+    puts "✓ 測試圖片：#{output.fetch(:mappings).length} 張"
+  else
+    puts "✓ TextBundle 格式正確"
+    puts "✓ 文章檔名：_posts/#{preview.filename}"
+    preview.bundle.asset_mappings(preview.asset_web_root).each do |mapping|
+      puts "✓ 圖片：#{mapping.fetch(:source).basename} → #{mapping.fetch(:web_path)}"
+    end
+    puts
+    puts preview.markdown
+  end
+rescue OptionParser::ParseError, ArgumentError, Date::Error => e
+  warn "錯誤：#{e.message}"
+  exit 1
+end
