@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publish MyBlog"
+  short_description: "Safely prepare and publish Ulysses posts to MyBlog"
+  default_prompt: "Use $publish-myblog to prepare a Ulysses article for MyBlog and ask before publishing."

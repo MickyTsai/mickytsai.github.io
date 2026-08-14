@@ -35,3 +35,6 @@ assets/js/dist
 
 # Ulysses configurations
 .Ulysses-*.plist
+
+# Local Ulysses exports and MyBlog publishing receipts
+.myblog/
